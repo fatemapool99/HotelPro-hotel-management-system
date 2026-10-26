@@ -6,14 +6,12 @@ import {
   BedDouble,
   Calendar,
   LogOut,
-  Users,
-  Bed,
   CheckCircle2,
   ArrowRight,
-  ShieldCheck,
   Star,
   Search,
 } from 'lucide-react';
+import { formatINR } from '../utils/formatters';
 
 export default function UserHome({
   rooms = [],
@@ -49,7 +47,7 @@ export default function UserHome({
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hotel-gold/20 text-hotel-goldLight text-xs font-semibold uppercase tracking-wider border border-hotel-gold/30">
             <Sparkles className="w-3.5 h-3.5 text-hotel-gold" />
-            <span>Verified Guest Portal</span>
+            <span>Your account</span>
           </div>
 
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
@@ -57,8 +55,7 @@ export default function UserHome({
           </h1>
 
           <p className="text-sm text-gray-300 max-w-xl">
-            Welcome to your personalized HotelPro sanctuary. Explore our available rooms, book seamless
-            stays, and manage your reservation itineraries in one place.
+            Find a room for your next trip, view your bookings or update your details.
           </p>
         </div>
 
@@ -95,7 +92,7 @@ export default function UserHome({
       <section className="bg-white rounded-2xl border border-hotel-sand p-6 sm:p-8 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
         <div className="space-y-2 md:col-span-2">
           <h2 className="font-serif font-bold text-2xl text-hotel-navy">
-            Welcome to Your Luxury Guest Experience
+            Your next stay starts here
           </h2>
           <p className="text-sm text-gray-600 leading-relaxed">
             As an authenticated HotelPro guest, you enjoy priority suite reservations, guaranteed best rates,
@@ -127,7 +124,7 @@ export default function UserHome({
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-hotel-sand pb-4">
           <div>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-hotel-navy">
-              Available Luxury Rooms
+              Available rooms
             </h2>
             <p className="text-xs text-gray-500 mt-1">
               Showing {filteredRooms.length} rooms retrieved live from MongoDB database.
@@ -224,7 +221,7 @@ export default function UserHome({
                         </span>
                         <div className="flex items-baseline gap-1">
                           <span className="font-serif text-2xl font-extrabold text-hotel-navy">
-                            ${room.pricePerNight}
+                            {formatINR(room.pricePerNight)}
                           </span>
                           <span className="text-xs text-gray-500">/ night</span>
                         </div>

@@ -8,28 +8,27 @@ dotenv.config();
 
 const sampleRooms = [
   {
-    title: 'The Royal Oceanfront Penthouse Suite',
+    title: 'Sea View Penthouse',
     roomType: 'Presidential Suite',
-    pricePerNight: 850,
+    pricePerNight: 24000,
     capacity: {
       guests: 4,
       beds: 2,
-      bedType: 'California King',
+      bedType: 'California King Bed',
     },
     size: '1,200 sq ft',
     description:
-      'Perched on the top floor with panoramic ocean vistas, this masterwork suite features an expansive wrap-around private terrace, private marble infinity jacuzzi, dedicated butler service, and bespoke Italian furnishings.',
+      'A top-floor suite with sea views, a private terrace and a separate dining area. Sleeps up to four guests.',
     amenities: [
-      'Panoramic Ocean View',
-      'Private Jacuzzi Terrace',
-      'Personal Butler Service',
-      'Complimentary Champagne & Caviar',
-      'High-Speed Wi-Fi 6',
-      'Smart Home Automation',
-      'Sub-Zero Wine Cooler',
-      'Dyson Supersonic Hair Dryer',
-      'Bvlgari Bath Amenities',
-      '24/7 In-Suite Dining',
+      'Arabian Sea View',
+      'Private Terrace',
+      'Dedicated Butler Assistance',
+      'Complimentary Breakfast',
+      'High-Speed Wi-Fi',
+      'Express Check-In',
+      'Coffee & Tea Station',
+      'Luxury Bath Amenities',
+      '24/7 Room Service',
     ],
     images: [
       'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1400&q=80',
@@ -44,9 +43,9 @@ const sampleRooms = [
     featured: true,
   },
   {
-    title: 'Executive Grand Azure Suite',
+    title: 'Executive Suite',
     roomType: 'Executive Suite',
-    pricePerNight: 490,
+    pricePerNight: 9500,
     capacity: {
       guests: 3,
       beds: 2,
@@ -54,16 +53,16 @@ const sampleRooms = [
     },
     size: '780 sq ft',
     description:
-      'Engineered for discerning travelers and luxury seekers. Features a separate executive lounge, soundproof acoustics, floor-to-ceiling soundproof glass walls overlooking the harbor, and an Italian marble bathroom with rainfall shower.',
+      'A king bed, daybed and separate sitting area, with a desk for work and views across the city. Sleeps up to three guests.',
     amenities: [
-      'Harbor & City View',
+      'City Skyline View',
       'Executive Lounge Access',
-      'Nespresso Vertuo Barista Station',
-      'Italian Marble Rainfall Shower',
-      'High-Speed Wi-Fi 6',
-      'Ergonomic Herman Miller Workspace',
-      '65" OLED Smart TV',
-      'Plush Terry Robes & Slippers',
+      'Ergonomic Work Desk',
+      'Marble Bathroom with Rain Shower',
+      'High-Speed Wi-Fi',
+      'Smart TV',
+      'Tea & Coffee Maker',
+      'Plush Robes & Slippers',
     ],
     images: [
       'https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=1400&q=80',
@@ -77,26 +76,26 @@ const sampleRooms = [
     featured: true,
   },
   {
-    title: 'Private Overwater Coral Villa',
+    title: 'Private Pool Villa',
     roomType: 'Ocean Villa',
-    pricePerNight: 680,
+    pricePerNight: 16500,
     capacity: {
       guests: 2,
       beds: 1,
-      bedType: 'King Plush Canopy Bed',
+      bedType: 'King Canopy Bed',
     },
     size: '950 sq ft',
     description:
-      'Immerse in tranquility suspended directly above turquoise azure waters. Features a glass-bottom floor viewing panel, private plunge pool on the sun deck, direct ocean lagoon access ladder, and outdoor soaking tub.',
+      'A one-bedroom villa in Candolim, Goa, with a private plunge pool, sun deck and garden courtyard. A short walk from the beach.',
     amenities: [
-      'Direct Lagoon Access',
       'Private Plunge Pool',
-      'Glass Floor Ocean Viewing Panel',
-      'Outdoor Soaking Tub',
-      'Complimentary Sunset Cocktails',
-      'Bose SoundLink Sound System',
-      'Organic Artisanal Breakfast Included',
-      'King Canopy Bed with Egyptian Linen',
+      'Sun Deck with Loungers',
+      'Garden Courtyard',
+      'Complimentary Evening Refreshments',
+      'Breakfast Included',
+      'High-Speed Wi-Fi',
+      'Handcrafted Teak Furniture',
+      'King Canopy Bed',
     ],
     images: [
       'https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=1400&q=80',
@@ -110,9 +109,9 @@ const sampleRooms = [
     featured: true,
   },
   {
-    title: 'Deluxe Emerald Garden Room',
+    title: 'Garden Room',
     roomType: 'Deluxe Room',
-    pricePerNight: 295,
+    pricePerNight: 5400,
     capacity: {
       guests: 2,
       beds: 1,
@@ -120,16 +119,15 @@ const sampleRooms = [
     },
     size: '520 sq ft',
     description:
-      'A serene sanctuary surrounded by manicured tropical gardens. Indulge in an airy sunlit terrace, handcrafted teak furnishings, a deep soaking tub, and ultra-plush 600-thread-count Egyptian cotton bedding.',
+      'A king room overlooking the garden courtyard, with a veranda and a bathroom with a soaking tub.',
     amenities: [
-      'Tropical Garden Veranda',
+      'Garden Courtyard Veranda',
       'Deep Soaking Tub',
-      'Gourmet Mini Bar',
-      'Illy Espresso Machine',
+      'Tea & Coffee Selection',
       'High-Speed Wi-Fi',
-      '55" 4K Smart TV',
-      'Botanical Spa Toiletries',
-      'Daily Evening Turndown Service',
+      '4K Smart TV',
+      'Organic Spa Toiletries',
+      'Daily Housekeeping & Turndown',
     ],
     images: [
       'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1400&q=80',
@@ -143,25 +141,25 @@ const sampleRooms = [
     featured: false,
   },
   {
-    title: 'Opulent Sunset Horizon Suite',
+    title: 'Lake View Suite',
     roomType: 'Executive Suite',
-    pricePerNight: 540,
+    pricePerNight: 11000,
     capacity: {
       guests: 3,
       beds: 2,
-      bedType: '1 King Bed, 1 Queen Sofa Bed',
+      bedType: '1 King Bed, 1 Daybed',
     },
     size: '820 sq ft',
     description:
-      'Positioned strategically on the western wing to capture breath-taking golden hour sunsets every evening. Boasts a dual-vanity spa bathroom, bespoke bar credenza, and custom mood ambient illumination.',
+      'A lake-facing suite with a balcony, window seating and a separate dressing area. Includes a king bed and daybed.',
     amenities: [
-      'Golden Hour Sunset Balcony',
-      'Dual-Vanity Spa Bathroom',
-      'Curated Cocktail Station',
-      'Chromecast-Enabled TV',
+      'Lake Pichola View Balcony',
+      'Traditional Jharokha Seating',
+      'Dual-Vanity Bathroom',
+      'Chromecast Smart TV',
       'High-Speed Wi-Fi',
-      'Custom Ambient Lighting System',
-      'Walk-In Wardrobe',
+      'Ambient Lighting',
+      'Spacious Dressing Area',
     ],
     images: [
       'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1400&q=80',
@@ -175,9 +173,9 @@ const sampleRooms = [
     featured: false,
   },
   {
-    title: 'Standard Luxury Coastal King',
+    title: 'King Room',
     roomType: 'Standard Luxury',
-    pricePerNight: 210,
+    pricePerNight: 3800,
     capacity: {
       guests: 2,
       beds: 1,
@@ -185,15 +183,15 @@ const sampleRooms = [
     },
     size: '420 sq ft',
     description:
-      'Refined simplicity and unmatched comfort. Designed with clean minimalist aesthetics, warm coastal oak textures, premium acoustic insulation, and an ultra-comfortable cloud mattress for restorative sleep.',
+      'A king room for two with a work desk, balcony and walk-in shower. Wi-Fi and tea and coffee are included.',
     amenities: [
-      'Coastal Breeze Balcony',
-      'Cloud Comfort Mattress',
-      'Complimentary Bottled Artesian Water',
+      'City Breeze Balcony',
+      'Premium Orthopedic Mattress',
+      'Complimentary Packaged Water',
       'High-Speed Wi-Fi',
-      'Rain Shower',
+      'Walk-in Rain Shower',
       'In-Room Safe & Mini Fridge',
-      'Tea & Coffee Selection',
+      'Tea & Coffee Station',
     ],
     images: [
       'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1400&q=80',
@@ -207,9 +205,9 @@ const sampleRooms = [
     featured: false,
   },
   {
-    title: 'The Ambassador Presidential Penthouse',
+    title: 'Presidential Suite',
     roomType: 'Presidential Suite',
-    pricePerNight: 980,
+    pricePerNight: 32000,
     capacity: {
       guests: 6,
       beds: 3,
@@ -217,17 +215,16 @@ const sampleRooms = [
     },
     size: '1,650 sq ft',
     description:
-      'The crown jewel of HotelPro. Spanning across three private balconies with 360-degree skyline and sea panoramas, a grand baby piano, private boardroom dining table for 8, and biometric keyless access.',
+      'Our largest suite sleeps six, with two king beds and a queen bed. Includes two terraces, a separate lounge and a dining table for eight.',
     amenities: [
-      '360° Skyline & Sea Views',
-      '3 Private Balconies',
-      'Baby Grand Piano',
-      'Formal Dining Room for 8',
-      'Personal Chef On-Demand',
-      'Private Chauffeur Airport Transfer',
-      'Sauna & Steam Shower',
-      'Bang & Olufsen Acoustics',
-      'Dedicated 24/7 Butler Team',
+      '360° Lake & City Views',
+      'Dual Private Terraces',
+      'Formal Dining Suite for 8',
+      'Dedicated Butler Team',
+      'Airport Chauffeur Transfer (Sample Service)',
+      'Steam Shower',
+      'High-End Sound System',
+      'Indian Tea Selection',
     ],
     images: [
       'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1400&q=80',
@@ -241,9 +238,9 @@ const sampleRooms = [
     featured: true,
   },
   {
-    title: 'Deluxe Twin Skyline Suite',
+    title: 'Family Room',
     roomType: 'Deluxe Room',
-    pricePerNight: 320,
+    pricePerNight: 6200,
     capacity: {
       guests: 4,
       beds: 2,
@@ -251,15 +248,15 @@ const sampleRooms = [
     },
     size: '580 sq ft',
     description:
-      'Ideal for families and groups traveling in style. Offering two plush queen beds, magnificent city skyline views, a spacious sitting area, and two separate vanity dressing stations.',
+      'Two queen beds and a sitting area, with city views and space for up to four guests.',
     amenities: [
       'City Skyline Views',
       'Two Plush Queen Beds',
-      'Twin Vanity Dressing Counter',
+      'Double Vanity Dressing Counter',
       'High-Speed Wi-Fi',
-      'Nespresso Bar',
-      'Smart TV with Streaming Apps',
-      'Signature Bathrobes',
+      'Coffee & Tea Station',
+      'Smart TV with Streaming Support',
+      'Plush Bathrobes',
     ],
     images: [
       'https://images.unsplash.com/photo-1590490359683-658d3d23f972?auto=format&fit=crop&w=1400&q=80',
@@ -276,6 +273,9 @@ const sampleRooms = [
 
 const seedDatabase = async () => {
   try {
+    if (process.env.NODE_ENV === 'production' || process.env.ALLOW_DATABASE_RESET !== 'true') {
+      throw new Error('Legacy seed resets all data. Use rooms:refresh instead. For an intentional development reset, set ALLOW_DATABASE_RESET=true.');
+    }
     const mongoUri = process.env.MONGODB_URI;
     if (!mongoUri) {
       console.error('❌ MONGODB_URI is not set in environment.');
@@ -292,34 +292,34 @@ const seedDatabase = async () => {
     await Room.deleteMany({});
     await User.deleteMany({});
 
-    // Create Admin User
+    // Create Admin User with Indian sample phone
     console.log('👤 Creating default Admin user...');
     const adminUser = await User.create({
       name: 'HotelPro General Manager',
       email: 'admin@hotelpro.com',
       password: 'Admin@123456',
       role: 'admin',
-      phone: '+1 (800) 555-0199',
+      phone: '+91 98201 00199',
     });
     console.log(`✅ Admin created: admin@hotelpro.com / Admin@123456`);
 
-    // Create Demo Guest User
+    // Create Demo Guest User with Indian sample name and phone
     console.log('👤 Creating demo guest user...');
     const guestUser = await User.create({
-      name: 'Alexander Wright',
+      name: 'Aarav Sharma',
       email: 'guest@hotelpro.com',
       password: 'Guest@123456',
       role: 'user',
-      phone: '+1 (555) 724-8831',
+      phone: '+91 98201 72488',
     });
     console.log(`✅ Guest created: guest@hotelpro.com / Guest@123456`);
 
     // Insert sample rooms
-    console.log('🏨 Seeding luxury rooms...');
+    console.log('🏨 Seeding luxury rooms in INR...');
     const createdRooms = await Room.insertMany(sampleRooms);
     console.log(`✅ Inserted ${createdRooms.length} luxury rooms successfully.`);
 
-    // Create a sample booking for demo
+    // Create a sample booking for demo with pay_at_hotel status
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 3);
     const dayAfter = new Date();
@@ -334,14 +334,14 @@ const seedDatabase = async () => {
       pricePerNight: createdRooms[0].pricePerNight,
       totalPrice: Math.round(createdRooms[0].pricePerNight * 3 * 1.12),
       guestInfo: {
-        fullName: 'Alexander Wright',
+        fullName: 'Aarav Sharma',
         email: 'guest@hotelpro.com',
-        phone: '+1 (555) 724-8831',
-        specialRequests: 'High floor preferred, late check-in at 8 PM.',
+        phone: '+91 98201 72488',
+        specialRequests: 'Quiet high-floor room preferred, late check-in at 8 PM.',
         adults: 2,
         children: 0,
       },
-      paymentStatus: 'paid',
+      paymentStatus: 'pay_at_hotel',
       status: 'confirmed',
     });
 

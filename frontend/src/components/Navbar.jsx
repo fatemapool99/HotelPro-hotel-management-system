@@ -64,7 +64,7 @@ export default function Navbar({ activePage, setActivePage, onOpenBookingModal }
                 HOTEL<span className="text-hotel-gold">PRO</span>
               </span>
               <span className="block text-[10px] tracking-widest uppercase text-hotel-goldLight font-medium -mt-1">
-                Luxury Stays & Suites
+                Rooms, suites & villas
               </span>
             </div>
           </button>
@@ -241,9 +241,15 @@ export default function Navbar({ activePage, setActivePage, onOpenBookingModal }
             </button>
           </div>
 
+          {!isAuthenticated && (
+            <button onClick={() => openAuthModal('admin')} className="hidden md:block text-xs text-hotel-gold hover:underline">Admin Sign In</button>
+          )}
+
           {/* Mobile Menu Hamburger */}
           <div className="flex md:hidden items-center gap-2">
             <button
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileMenuOpen}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-hotel-navyLight focus:outline-none"
             >

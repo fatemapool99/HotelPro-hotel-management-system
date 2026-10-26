@@ -2,15 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { bookingAPI } from '../services/api';
+import { formatINR, formatDateDDMMYYYY } from '../utils/formatters';
 import {
   Calendar,
-  Clock,
-  DollarSign,
-  AlertCircle,
-  CheckCircle,
-  XCircle,
   BedDouble,
-  ArrowRight,
   Printer,
   Sparkles,
 } from 'lucide-react';
@@ -109,7 +104,7 @@ export default function MyBookingsPage({ onNavigate, onBookRoom }) {
             My Reservations
           </h1>
           <p className="text-xs text-gray-500 mt-1">
-            Manage your past and upcoming luxury stays with HotelPro.
+            View your upcoming stays and past bookings.
           </p>
         </div>
 
@@ -152,18 +147,8 @@ export default function MyBookingsPage({ onNavigate, onBookRoom }) {
       ) : filteredBookings.length > 0 ? (
         <div className="space-y-6">
           {filteredBookings.map((b) => {
-            const checkInFormatted = new Date(b.checkInDate).toLocaleDateString('en-US', {
-              weekday: 'short',
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-            });
-            const checkOutFormatted = new Date(b.checkOutDate).toLocaleDateString('en-US', {
-              weekday: 'short',
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-            });
+            const checkInFormatted = formatDateDDMMYYYY(b.checkInDate);
+            const checkOutFormatted = formatDateDDMMYYYY(b.checkOutDate);
 
             return (
               <div
@@ -200,7 +185,7 @@ export default function MyBookingsPage({ onNavigate, onBookRoom }) {
                   <div>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <h3 className="font-serif font-bold text-xl text-hotel-navy">
-                        {b.room?.title || 'Luxury Suite'}
+                        {b.room?.title || 'Room'}
                       </h3>
                       <span className="text-[11px] text-gray-400 font-mono">
                         Ref: #{b._id.substring(18).toUpperCase()}
@@ -244,10 +229,14 @@ export default function MyBookingsPage({ onNavigate, onBookRoom }) {
                     <div>
                       <span className="text-gray-400 block font-medium">Total Amount</span>
                       <span className="font-serif font-bold text-hotel-goldDark text-base block">
-                        ${b.totalPrice}
+                        {formatINR(b.totalPrice)}
                       </span>
                       <span className="text-[10px] text-emerald-700 capitalize font-medium">
-                        {b.paymentStatus === 'paid' ? 'Paid Online' : 'Pay at Check-In'}
+                        {b.paymentStatus === 'paid'
+                          ? 'Paid Online'
+                          : b.paymentStatus === 'pay_at_hotel'
+                          ? 'Pay at Check-In'
+                          : 'Payment Pending'}
                       </span>
                     </div>
                   </div>

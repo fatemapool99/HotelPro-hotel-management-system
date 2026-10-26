@@ -6,15 +6,11 @@ import {
   Maximize2,
   Star,
   CheckCircle2,
-  Calendar,
-  Sparkles,
   ShieldCheck,
   Clock,
   ArrowRight,
-  Wifi,
-  Coffee,
-  Tv,
 } from 'lucide-react';
+import { formatINR } from '../utils/formatters';
 
 export default function RoomDetailsModal({ room, isOpen, onClose, onBookRoom }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -75,7 +71,7 @@ export default function RoomDetailsModal({ room, isOpen, onClose, onBookRoom }) 
               <span className="text-xs text-gray-300 uppercase block">Starting from</span>
               <div className="flex items-baseline gap-1">
                 <span className="font-serif text-3xl font-extrabold text-hotel-gold">
-                  ${room.pricePerNight}
+                  {formatINR(room.pricePerNight)}
                 </span>
                 <span className="text-xs text-gray-300">/ night</span>
               </div>
@@ -208,7 +204,7 @@ export default function RoomDetailsModal({ room, isOpen, onClose, onBookRoom }) 
               <span className="text-xs text-gray-400 uppercase block">Total Rate</span>
               <div className="flex items-baseline gap-1">
                 <span className="font-serif text-3xl font-extrabold text-hotel-navy">
-                  ${room.pricePerNight}
+                  {formatINR(room.pricePerNight)}
                 </span>
                 <span className="text-xs text-gray-500">/ night</span>
               </div>

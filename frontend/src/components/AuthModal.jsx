@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { X, Lock, Mail, User, Phone, Sparkles, CheckCircle2, ShieldAlert } from 'lucide-react';
@@ -19,6 +19,16 @@ export default function AuthModal({ onLoginSuccess }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
+  const [adminLogin, setAdminLogin] = useState(false);
+  useEffect(() => {
+    if (authModal.isOpen) {
+      setIsLogin(authModal.mode !== 'register');
+      setAdminLogin(authModal.mode === 'admin');
+      setErrorMessage('');
+      setSuccessMessage('');
+    }
+  }, [authModal.isOpen, authModal.mode]);
+
   if (!authModal.isOpen) return null;
 
   const handleChange = (e) => {
@@ -35,7 +45,7 @@ export default function AuthModal({ onLoginSuccess }) {
     try {
       if (isLogin) {
         // SkillWallet Rule: Ordinary users → UserHome, Administrators → AdminHome
-        const loggedInUser = await login(formData.email, formData.password);
+        const loggedInUser = await login(formData.email, formData.password, adminLogin ? 'admin' : undefined);
         toast.success(`Welcome back, ${loggedInUser.name}!`);
         closeAuthModal();
         if (onLoginSuccess) {
@@ -89,30 +99,6 @@ export default function AuthModal({ onLoginSuccess }) {
     }
   };
 
-  const fillDemoAccount = (role) => {
-    if (role === 'admin') {
-      setFormData({
-        name: 'HotelPro Admin',
-        email: 'admin@hotelpro.com',
-        phone: '+1 (800) 555-0199',
-        password: 'Admin@123456',
-        confirmPassword: 'Admin@123456',
-      });
-      setIsLogin(true);
-    } else {
-      setFormData({
-        name: 'Alexander Wright',
-        email: 'guest@hotelpro.com',
-        phone: '+1 (555) 724-8831',
-        password: 'Guest@123456',
-        confirmPassword: 'Guest@123456',
-      });
-      setIsLogin(true);
-    }
-    setErrorMessage('');
-    setSuccessMessage('');
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
       <div className="relative w-full max-w-md bg-hotel-navy border border-hotel-gold/30 rounded-2xl shadow-2xl overflow-hidden text-hotel-cream">
@@ -124,10 +110,10 @@ export default function AuthModal({ onLoginSuccess }) {
             </div>
             <div>
               <h3 className="font-serif text-xl font-bold text-hotel-cream">
-                {isLogin ? 'Sign In to HotelPro' : 'Create Guest Account'}
+                {isLogin ? (adminLogin ? 'Admin Sign In' : 'Guest Sign In') : 'Create Guest Account'}
               </h3>
               <p className="text-xs text-hotel-goldLight">
-                {isLogin ? 'Access your luxury reservations' : 'Sign up to book and manage stays'}
+                {isLogin ? (adminLogin ? 'Sign in with your existing administrator account' : 'Sign in to view and manage your bookings') : 'Sign up to book and manage stays'}
               </p>
             </div>
           </div>
@@ -144,20 +130,22 @@ export default function AuthModal({ onLoginSuccess }) {
           <button
             onClick={() => {
               setIsLogin(true);
+              setAdminLogin(false);
               setErrorMessage('');
               setSuccessMessage('');
             }}
             className={`flex-1 py-3 text-sm font-semibold transition-colors duration-200 ${
-              isLogin
+              isLogin && !adminLogin
                 ? 'text-hotel-gold border-b-2 border-hotel-gold bg-hotel-gold/10'
                 : 'text-gray-400 hover:text-white'
             }`}
           >
-            Sign In
+            Guest Sign In
           </button>
           <button
             onClick={() => {
               setIsLogin(false);
+              setAdminLogin(false);
               setErrorMessage('');
               setSuccessMessage('');
             }}
@@ -171,31 +159,16 @@ export default function AuthModal({ onLoginSuccess }) {
           </button>
         </div>
 
+        <button
+          type="button"
+          onClick={() => { setIsLogin(true); setAdminLogin(true); setErrorMessage(''); setSuccessMessage(''); }}
+          className="w-full py-3 text-sm font-semibold text-hotel-gold border-b border-hotel-gold/20 hover:bg-hotel-gold/10"
+        >
+          Admin Sign In
+        </button>
+
         {/* Form Body */}
         <div className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-          {/* Quick Demo Fill Pill Buttons */}
-          <div className="p-3 rounded-xl bg-hotel-navyLight/70 border border-hotel-gold/20 space-y-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-hotel-goldLight block">
-              Quick One-Click Demo Access
-            </span>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => fillDemoAccount('guest')}
-                className="px-3 py-1.5 text-xs font-medium rounded-lg bg-hotel-navy border border-hotel-gold/40 hover:border-hotel-gold text-hotel-cream hover:text-hotel-gold transition-colors text-center"
-              >
-                👤 Demo Guest
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoAccount('admin')}
-                className="px-3 py-1.5 text-xs font-medium rounded-lg bg-hotel-navy border border-hotel-gold/40 hover:border-hotel-gold text-hotel-cream hover:text-hotel-gold transition-colors text-center"
-              >
-                🛡️ Demo Admin
-              </button>
-            </div>
-          </div>
-
           {successMessage && (
             <div className="p-3 rounded-lg bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 text-xs flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
@@ -224,7 +197,7 @@ export default function AuthModal({ onLoginSuccess }) {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="e.g. Eleanor Vance"
+                    placeholder="e.g. Aarav Sharma"
                     className="w-full pl-9 pr-3 py-2 bg-hotel-navyLight border border-hotel-gold/30 rounded-lg text-xs text-white placeholder-gray-500 focus:outline-none focus:border-hotel-gold transition-colors"
                   />
                 </div>
@@ -262,7 +235,7 @@ export default function AuthModal({ onLoginSuccess }) {
                     required
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+1 (555) 000-0000"
+                    placeholder="+91 98765 43210"
                     className="w-full pl-9 pr-3 py-2 bg-hotel-navyLight border border-hotel-gold/30 rounded-lg text-xs text-white placeholder-gray-500 focus:outline-none focus:border-hotel-gold transition-colors"
                   />
                 </div>
@@ -324,16 +297,17 @@ export default function AuthModal({ onLoginSuccess }) {
           </form>
 
           <p className="text-center text-xs text-gray-400 pt-2">
-            {isLogin ? "Don't have an account yet? " : 'Already registered? '}
+            {adminLogin ? 'Guest account? ' : isLogin ? "Don't have an account yet? " : 'Already registered? '}
             <button
               onClick={() => {
-                setIsLogin(!isLogin);
+                setIsLogin(adminLogin ? true : !isLogin);
+                setAdminLogin(false);
                 setErrorMessage('');
                 setSuccessMessage('');
               }}
               className="text-hotel-gold font-semibold underline hover:text-hotel-goldLight transition-colors"
             >
-              {isLogin ? 'Register here' : 'Sign in here'}
+              {adminLogin ? 'Guest sign in' : isLogin ? 'Register here' : 'Sign in here'}
             </button>
           </p>
         </div>

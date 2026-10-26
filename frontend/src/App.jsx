@@ -19,7 +19,7 @@ import MyBookingsPage from './pages/MyBookingsPage';
 import ProfilePage from './pages/ProfilePage';
 
 function HotelProApp() {
-  const { user, isAuthenticated, isAdmin, openAuthModal } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
   const [activePage, setActivePage] = useState('home');
   const [rooms, setRooms] = useState([]);
   const [loadingRooms, setLoadingRooms] = useState(true);

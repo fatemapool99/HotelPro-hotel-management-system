@@ -79,7 +79,7 @@ cd backend
 npm install
 cp .env.example .env
 # Edit .env with your MONGODB_URI and JWT_SECRET
-npm run seed     # Seeds luxury suites, admin, and demo accounts
+npm run rooms:refresh  # Creates/updates rooms without resetting accounts or bookings
 npm start        # Starts Express server on http://localhost:5000
 ```
 
@@ -90,16 +90,26 @@ npm install
 npm run dev      # Starts Vite React dev server on http://localhost:5173
 ```
 
+Keep both the backend and frontend running in separate terminals. The frontend
+forwards `/api` requests to `http://127.0.0.1:5000` during development. If rooms or
+sign-in fail with a network error, check `http://localhost:5000/api/health` and
+confirm MongoDB is running. In Windows PowerShell, use `npm.cmd` if `npm` is
+blocked by the script execution policy.
+
+For production, configure your web server to forward `/api` to the backend, or
+set `VITE_API_URL` to the backend's public URL including `/api` before building.
+See `frontend/.env.example`.
+
 ---
 
-## 🔑 Demo Credentials
+## Accounts and deployment
 
-| Role | Email | Password |
-| :--- | :--- | :--- |
-| **Administrator** | `admin@hotelpro.com` | `Admin@123456` |
-| **Demo Guest** | `guest@hotelpro.com` | `Guest@123456` |
+Public registration creates guest accounts. Demo sign-in shortcuts have been removed.
+Previous local accounts and bookings were cleared, and a new local administrator
+was created and verified. For another deployment, create an admin privately using `npm run admin:create` with the environment variables
+listed in [DEPLOYMENT.md](DEPLOYMENT.md).
 
-*(One-click demo buttons are also available on the Sign In modal).*
+Follow [DEPLOYMENT.md](DEPLOYMENT.md) for hosting, configuration and submission checks.
 
 ---
 

@@ -114,24 +114,24 @@ async function runTests() {
     assert.strictEqual(isOverlapping(existIn, existOut, '2026-11-20', '2026-11-25'), false, 'Disjoint future booking must be allowed');
   });
 
-  // --- TEST GROUP 3: PRICING & CALCULATION LOGIC ---
-  console.log('\n--- Suite 3: Nights and Total Price Calculation Logic ---');
+  // --- TEST GROUP 3: PRICING & CALCULATION LOGIC (INR) ---
+  console.log('\n--- Suite 3: Nights and Total Price Calculation Logic (INR) ---');
 
-  test('Total nights and tax calculation', () => {
+  test('Total nights and estimated taxes & service fee calculation in INR', () => {
     const checkIn = new Date('2026-12-01');
     const checkOut = new Date('2026-12-05');
     const diffDays = Math.ceil(Math.abs(checkOut - checkIn) / (1000 * 60 * 60 * 24));
     assert.strictEqual(diffDays, 4, 'Should accurately calculate 4 nights');
 
-    const pricePerNight = 450;
+    const pricePerNight = 5400;
     const subtotal = diffDays * pricePerNight;
-    assert.strictEqual(subtotal, 1800, 'Subtotal should be $1,800');
+    assert.strictEqual(subtotal, 21600, 'Subtotal should be ₹21,600');
 
     const taxAndServiceFee = Math.round(subtotal * 0.12);
-    assert.strictEqual(taxAndServiceFee, 216, '12% tax/fee should be $216');
+    assert.strictEqual(taxAndServiceFee, 2592, '12% estimated taxes & service fee should be ₹2,592');
 
     const totalPrice = subtotal + taxAndServiceFee;
-    assert.strictEqual(totalPrice, 2016, 'Total price should be $2,016');
+    assert.strictEqual(totalPrice, 24192, 'Total price should be ₹24,192');
   });
 
   // --- TEST SUMMARY ---

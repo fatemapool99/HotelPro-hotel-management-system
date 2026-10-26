@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { roomAPI, bookingAPI, authAPI } from '../services/api';
+import { formatINR, formatDateDDMMYYYY } from '../utils/formatters';
 import {
   ShieldCheck,
   Calendar,
@@ -10,12 +11,7 @@ import {
   Users,
   LogOut,
   Trash2,
-  Edit3,
   Search,
-  CheckCircle2,
-  Clock,
-  XCircle,
-  Sparkles,
   RefreshCw,
 } from 'lucide-react';
 
@@ -39,7 +35,7 @@ export default function AdminHome({ onRoomsUpdated, onNavigate }) {
     description: '',
     capacity: { guests: 2, beds: 1, bedType: 'King Bed' },
     size: '520 sq ft',
-    features: 'Panoramic Ocean View, High-Speed Wi-Fi, King Bed, Mini Bar',
+    features: 'Sea View, High-Speed Wi-Fi, King Bed, Mini Bar',
     images: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80',
     roomNumber: '',
     floor: 1,
@@ -149,7 +145,7 @@ export default function AdminHome({ onRoomsUpdated, onNavigate }) {
         description: '',
         capacity: { guests: 2, beds: 1, bedType: 'King Bed' },
         size: '520 sq ft',
-        features: 'Panoramic Ocean View, High-Speed Wi-Fi, King Bed, Mini Bar',
+        features: 'Sea View, High-Speed Wi-Fi, King Bed, Mini Bar',
         images: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80',
         roomNumber: '',
         floor: 1,
@@ -373,14 +369,14 @@ export default function AdminHome({ onRoomsUpdated, onNavigate }) {
                         </td>
                         <td className="py-3 px-3">
                           <span>
-                            {new Date(b.checkInDate).toLocaleDateString()} — {new Date(b.checkOutDate).toLocaleDateString()}
+                            {formatDateDDMMYYYY(b.checkInDate)} — {formatDateDDMMYYYY(b.checkOutDate)}
                           </span>
                           <span className="text-[10px] text-gray-400 block font-medium">
                             {b.totalNights} Nights • {b.guestInfo?.adults} Adults
                           </span>
                         </td>
                         <td className="py-3 px-3 font-serif font-bold text-hotel-goldDark text-sm">
-                          ${b.totalPrice}
+                          {formatINR(b.totalPrice)}
                         </td>
                         <td className="py-3 px-3">
                           <span
@@ -470,7 +466,7 @@ export default function AdminHome({ onRoomsUpdated, onNavigate }) {
                         Suite {room.roomNumber}
                       </td>
                       <td className="py-3 px-3 font-serif font-bold text-hotel-goldDark text-sm">
-                        ${room.pricePerNight}
+                        {formatINR(room.pricePerNight)}
                       </td>
                       <td className="py-3 px-3">
                         {room.capacity?.guests || 2} Guests • {room.capacity?.bedType || 'King Bed'}
@@ -556,13 +552,13 @@ export default function AdminHome({ onRoomsUpdated, onNavigate }) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">
-                    Price per Night ($) *
+                    Price per Night (₹) *
                   </label>
                   <input
                     type="number"
                     required
-                    min={50}
-                    placeholder="350"
+                    min={500}
+                    placeholder="5500"
                     value={newRoom.pricePerNight}
                     onChange={(e) => setNewRoom({ ...newRoom, pricePerNight: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-hotel-sand bg-hotel-cream text-xs text-hotel-navy focus:outline-none focus:border-hotel-gold"
@@ -624,7 +620,7 @@ export default function AdminHome({ onRoomsUpdated, onNavigate }) {
                 <input
                   type="text"
                   required
-                  placeholder="Panoramic Ocean View, High-Speed Wi-Fi, King Bed, Jacuzzi"
+                  placeholder="Sea View, High-Speed Wi-Fi, King Bed, Jacuzzi"
                   value={newRoom.features}
                   onChange={(e) => setNewRoom({ ...newRoom, features: e.target.value })}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-hotel-sand bg-hotel-cream text-xs text-hotel-navy focus:outline-none focus:border-hotel-gold"
@@ -716,7 +712,7 @@ export default function AdminHome({ onRoomsUpdated, onNavigate }) {
                         </span>
                       </td>
                       <td className="py-3 px-3 text-gray-400">
-                        {new Date(u.createdAt).toLocaleDateString()}
+                        {formatDateDDMMYYYY(u.createdAt)}
                       </td>
                     </tr>
                   ))}

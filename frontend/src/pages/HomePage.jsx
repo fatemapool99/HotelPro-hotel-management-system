@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import RoomCard from '../components/RoomCard';
 import { useAuth } from '../context/AuthContext';
+import { formatINR } from '../utils/formatters';
 
 export default function HomePage({
   rooms = [],
@@ -44,27 +45,35 @@ export default function HomePage({
   const carouselSlides = rooms.length > 0 ? rooms.slice(0, 4) : [
     {
       _id: 'c1',
-      title: 'The Royal Oceanfront Penthouse Suite',
+      title: 'Sea View Penthouse',
       roomType: 'Presidential Suite',
-      pricePerNight: 850,
-      description: 'Perched on the top floor with panoramic ocean vistas, private marble infinity jacuzzi, and dedicated butler service.',
+      pricePerNight: 24000,
+      description: 'A top-floor suite with sea views, a private terrace and a separate dining area. Sleeps up to four guests.',
       images: ['https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1800&q=85'],
     },
     {
       _id: 'c2',
-      title: 'Private Overwater Coral Villa',
+      title: 'Private Pool Villa',
       roomType: 'Ocean Villa',
-      pricePerNight: 680,
-      description: 'Suspended directly above crystal turquoise waters with private plunge pool and glass floor ocean viewing panel.',
+      pricePerNight: 16500,
+      description: 'A villa in Candolim, Goa, with a private plunge pool and garden courtyard.',
       images: ['https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=1800&q=85'],
     },
     {
       _id: 'c3',
-      title: 'Executive Grand Azure Suite',
+      title: 'Executive Suite',
       roomType: 'Executive Suite',
-      pricePerNight: 490,
-      description: 'Floor-to-ceiling soundproof glass walls overlooking the harbor, Italian marble rainfall shower, and executive lounge.',
+      pricePerNight: 9500,
+      description: 'A king bed, daybed and separate sitting area, with a work desk and city views.',
       images: ['https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=1800&q=85'],
+    },
+    {
+      _id: 'c4',
+      title: 'Lake View Suite',
+      roomType: 'Executive Suite',
+      pricePerNight: 11000,
+      description: 'A lake-facing suite with a balcony, window seating and a separate dressing area.',
+      images: ['https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1800&q=85'],
     },
   ];
 
@@ -138,7 +147,7 @@ export default function HomePage({
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 pb-36 space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-hotel-gold/20 border border-hotel-gold/40 text-hotel-goldLight text-xs font-semibold uppercase tracking-widest backdrop-blur-md animate-fadeIn">
             <Sparkles className="w-4 h-4 text-hotel-gold" />
-            <span>Featured Suite: {activeSlideData.roomType || 'Luxury Residence'}</span>
+            <span>Featured room: {activeSlideData.roomType || 'Room'}</span>
           </div>
 
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-hotel-cream tracking-tight leading-[1.15] max-w-4xl mx-auto drop-shadow-md">
@@ -154,7 +163,7 @@ export default function HomePage({
             <div className="px-4 py-2 rounded-xl bg-black/50 backdrop-blur-md border border-hotel-gold/30 text-white">
               <span className="text-xs text-hotel-goldLight block uppercase">Starting from</span>
               <span className="font-serif text-2xl font-extrabold text-hotel-gold">
-                ${activeSlideData.pricePerNight || 450}
+                {formatINR(activeSlideData.pricePerNight || 5400)}
               </span>
               <span className="text-xs text-gray-300"> / night</span>
             </div>
@@ -169,7 +178,7 @@ export default function HomePage({
               }}
               className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-hotel-gold to-hotel-goldDark text-hotel-navy font-bold text-xs uppercase tracking-wider hover:brightness-110 shadow-gold-glow transition-all flex items-center gap-2"
             >
-              <span>Book This Suite</span>
+              <span>Book this room</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -213,7 +222,7 @@ export default function HomePage({
               {/* Guests Selection */}
               <div className="px-4 py-2 rounded-xl sm:rounded-full bg-hotel-cream hover:bg-hotel-creamDark transition-colors">
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500">
-                  Guests & Suite
+                  Guests
                 </label>
                 <select
                   value={searchParams.guests}
@@ -262,35 +271,34 @@ export default function HomePage({
           <div className="lg:col-span-6 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hotel-gold/15 text-hotel-goldDark text-xs font-bold uppercase tracking-widest">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>About HotelPro Hospitality</span>
+              <span>About HotelPro</span>
             </div>
 
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-hotel-navy leading-tight">
-              A Legacy of Coastal Elegance & Bespoke Living
+              A good place to settle in
             </h2>
 
             <p className="text-sm text-gray-600 leading-relaxed">
-              Founded on the shores of Marina Bay, <strong>HotelPro</strong> is an architectural marvel
-              dedicated to uncompromising hospitality. Every suite, from our private overwater villas
-              to panoramic royal penthouses, is crafted with artisanal materials, Italian marble baths,
-              and private oceanfront terraces.
+              Find a room that fits your plans at <strong>HotelPro</strong>. Choose a city stay in Mumbai,
+              a pool villa in Goa or a lake-facing suite in Udaipur. Compare room sizes,
+              facilities and nightly rates before you book.
             </p>
 
             <div className="grid grid-cols-2 gap-4 pt-2">
               <div className="p-4 rounded-xl bg-hotel-cream border border-hotel-sand space-y-1">
                 <div className="flex items-center gap-2 text-hotel-goldDark">
                   <Award className="w-5 h-5" />
-                  <span className="font-bold text-xs uppercase tracking-wider text-hotel-navy">Forbes 5-Star</span>
+                  <span className="font-bold text-xs uppercase tracking-wider text-hotel-navy">Room to unwind</span>
                 </div>
-                <p className="text-[11px] text-gray-500">Consecutive excellence in personalized guest service</p>
+                <p className="text-[11px] text-gray-500">Choose from king rooms, family rooms and suites</p>
               </div>
 
               <div className="p-4 rounded-xl bg-hotel-cream border border-hotel-sand space-y-1">
                 <div className="flex items-center gap-2 text-hotel-goldDark">
                   <ShieldCheck className="w-5 h-5" />
-                  <span className="font-bold text-xs uppercase tracking-wider text-hotel-navy">Private Sanctuary</span>
+                  <span className="font-bold text-xs uppercase tracking-wider text-hotel-navy">Help when you need it</span>
                 </div>
-                <p className="text-[11px] text-gray-500">24/7 dedicated butler team & keyless biometric access</p>
+                <p className="text-[11px] text-gray-500">Contact the front desk for help during your stay</p>
               </div>
             </div>
 
@@ -299,7 +307,7 @@ export default function HomePage({
                 onClick={() => onNavigate('rooms')}
                 className="px-6 py-3 rounded-full bg-hotel-navy text-hotel-gold font-bold text-xs uppercase tracking-wider hover:bg-hotel-navyLight transition-colors"
               >
-                Discover Our Residences
+                Browse rooms
               </button>
 
               {!isAuthenticated && (
@@ -307,7 +315,7 @@ export default function HomePage({
                   onClick={() => openAuthModal('register')}
                   className="px-6 py-3 rounded-full border border-hotel-gold text-hotel-navy font-bold text-xs uppercase tracking-wider hover:bg-hotel-gold/10 transition-colors"
                 >
-                  Create Guest Account
+                  Create an account
                 </button>
               )}
             </div>
@@ -334,14 +342,13 @@ export default function HomePage({
           <div>
             <div className="inline-flex items-center gap-1.5 text-hotel-goldDark text-xs font-bold uppercase tracking-widest mb-2">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Signature Collection</span>
+              <span>Find your room</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-hotel-navy">
-              Room & Suite Previews
+              Rooms & suites
             </h2>
             <p className="text-sm text-gray-500 mt-1 max-w-xl">
-              Preview our handpicked accommodations available for immediate booking. Explore full amenities,
-              live pricing, and reserve in seconds.
+              See what each room includes, compare nightly rates and choose your dates.
             </p>
           </div>
 
@@ -371,13 +378,13 @@ export default function HomePage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-bold uppercase tracking-widest text-hotel-goldDark">
-              World-Class Leisure
+              During your stay
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-hotel-navy">
-              The HotelPro Amenities
+              More than a room
             </h2>
             <p className="text-sm text-gray-600">
-              Immerse yourself in unrivaled amenities designed to awaken the senses and rejuvenate mind, body, and spirit.
+              Take a swim, stop for a meal or ask the travel desk about getting around.
             </p>
           </div>
 
@@ -387,10 +394,10 @@ export default function HomePage({
                 <Waves className="w-6 h-6" />
               </div>
               <h3 className="font-serif font-bold text-lg text-hotel-navy">
-                Heated Ocean Infinity Pool
+                Swimming Pool & Deck
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Seamlessly blending into the horizon with private poolside cabanas, fresh fruit skewers, and cocktail service.
+                An outdoor pool with loungers, fresh towels and drinks served on the deck.
               </p>
             </div>
 
@@ -399,10 +406,10 @@ export default function HomePage({
                 <Utensils className="w-6 h-6" />
               </div>
               <h3 className="font-serif font-bold text-lg text-hotel-navy">
-                Michelin-Star Gastronomy
+                Multi-Cuisine Dining
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Award-winning dining crafted with locally sourced coastal ingredients, rare truffles, and sommelier selection.
+                Indian dishes and familiar favourites, cooked fresh each day.
               </p>
             </div>
 
@@ -411,10 +418,10 @@ export default function HomePage({
                 <Wine className="w-6 h-6" />
               </div>
               <h3 className="font-serif font-bold text-lg text-hotel-navy">
-                Sub-Zero Wine Cellar & Bar
+                Chai & Coffee Lounge
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Private tastings of rare vintages and masterclasses led by acclaimed sommeliers in our climate cellar.
+                Tea, freshly brewed coffee and a selection of snacks throughout the day.
               </p>
             </div>
 
@@ -423,10 +430,10 @@ export default function HomePage({
                 <Compass className="w-6 h-6" />
               </div>
               <h3 className="font-serif font-bold text-lg text-hotel-navy">
-                Private Yacht Charters
+                Heritage & City Tours
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Sunset cruises, secluded cove excursions, and deep-sea angling aboard our private hotel fleet.
+                Ask the travel desk about local walks, market visits and taxi transfers.
               </p>
             </div>
           </div>
@@ -441,11 +448,10 @@ export default function HomePage({
               Experience HotelPro
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold leading-tight">
-              Begin Your Unforgettable Journey With Us
+              Planning your next stay?
             </h2>
             <p className="text-sm text-gray-300">
-              Sign up today to explore suites, make real-time reservations without overlapping conflicts,
-              and manage your booking itinerary.
+              Create an account to book a room and keep track of your reservations.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
@@ -462,7 +468,7 @@ export default function HomePage({
                     onClick={() => openAuthModal('register')}
                     className="px-8 py-3.5 rounded-full bg-gradient-to-r from-hotel-gold to-hotel-goldDark text-hotel-navy font-bold text-xs uppercase tracking-wider hover:brightness-110 shadow-gold-glow transition-all"
                   >
-                    Create Account (Sign Up)
+                    Create an account
                   </button>
                   <button
                     onClick={() => openAuthModal('login')}

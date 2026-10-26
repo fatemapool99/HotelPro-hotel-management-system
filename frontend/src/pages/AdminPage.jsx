@@ -2,20 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { roomAPI, bookingAPI } from '../services/api';
+import { formatINR, formatDateDDMMYYYY } from '../utils/formatters';
 import {
   ShieldCheck,
   BedDouble,
   Calendar,
-  DollarSign,
-  Users,
   Plus,
   Trash2,
   Edit3,
-  CheckCircle,
-  XCircle,
   Search,
-  Filter,
-  Sparkles,
   X,
 } from 'lucide-react';
 
@@ -265,7 +260,7 @@ export default function AdminPage({ onRoomsUpdated }) {
           </span>
           <div className="flex items-baseline gap-1">
             <span className="font-serif text-3xl font-extrabold text-hotel-goldDark">
-              ${stats ? stats.totalRevenue.toLocaleString() : '0'}
+              {stats ? formatINR(stats.totalRevenue) : '₹0'}
             </span>
           </div>
           <p className="text-[10px] text-emerald-600 font-semibold">Active & Confirmed Stays</p>
@@ -379,7 +374,7 @@ export default function AdminPage({ onRoomsUpdated }) {
                       Suite {room.roomNumber} (Fl. {room.floor || 1})
                     </td>
                     <td className="py-3.5 px-4 font-serif font-bold text-hotel-goldDark text-sm">
-                      ${room.pricePerNight}
+                      {formatINR(room.pricePerNight)}
                     </td>
                     <td className="py-3.5 px-4">
                       {room.capacity?.guests || 2} Guests • {room.capacity?.bedType || 'King Bed'}
@@ -484,15 +479,15 @@ export default function AdminPage({ onRoomsUpdated }) {
                     </td>
                     <td className="py-3.5 px-4">
                       <span>
-                        {new Date(b.checkInDate).toLocaleDateString()} —{' '}
-                        {new Date(b.checkOutDate).toLocaleDateString()}
+                        {formatDateDDMMYYYY(b.checkInDate)} —{' '}
+                        {formatDateDDMMYYYY(b.checkOutDate)}
                       </span>
                       <span className="text-[11px] text-gray-400 block font-medium">
                         {b.totalNights} Nights • {b.guestInfo?.adults} Adults
                       </span>
                     </td>
                     <td className="py-3.5 px-4 font-serif font-bold text-hotel-goldDark text-sm">
-                      ${b.totalPrice}
+                      {formatINR(b.totalPrice)}
                     </td>
                     <td className="py-3.5 px-4">
                       <span
@@ -534,7 +529,7 @@ export default function AdminPage({ onRoomsUpdated }) {
               <div className="flex items-center gap-2.5">
                 <BedDouble className="w-5 h-5 text-hotel-gold" />
                 <h3 className="font-serif text-xl font-bold text-white">
-                  {editingRoom ? 'Edit Suite Details' : 'Add New Luxury Suite'}
+                  {editingRoom ? 'Edit Suite Details' : 'Add a room'}
                 </h3>
               </div>
               <button
@@ -586,13 +581,13 @@ export default function AdminPage({ onRoomsUpdated }) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Price per Night ($) *
+                    Price per Night (₹) *
                   </label>
                   <input
                     type="number"
                     required
-                    min={50}
-                    placeholder="450"
+                    min={500}
+                    placeholder="5500"
                     value={roomFormData.pricePerNight}
                     onChange={(e) =>
                       setRoomFormData({ ...roomFormData, pricePerNight: e.target.value })

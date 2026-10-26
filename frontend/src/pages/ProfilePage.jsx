@@ -2,15 +2,10 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { authAPI } from '../services/api';
+import { formatDateDDMMYYYY } from '../utils/formatters';
 import {
   User,
-  Mail,
-  Phone,
   Lock,
-  Award,
-  ShieldCheck,
-  Sparkles,
-  CheckCircle,
 } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -97,11 +92,7 @@ export default function ProfilePage() {
             </div>
             <p className="text-xs text-gray-300 font-medium">{user?.email}</p>
             <p className="text-xs text-gray-400">
-              HotelPro Member since{' '}
-              {new Date(user?.createdAt || Date.now()).toLocaleDateString('en-US', {
-                month: 'long',
-                year: 'numeric',
-              })}
+              HotelPro Member since {user?.createdAt ? formatDateDDMMYYYY(user.createdAt) : '2026'}
             </p>
           </div>
 
@@ -161,7 +152,7 @@ export default function ProfilePage() {
               </label>
               <input
                 type="tel"
-                placeholder="+1 (555) 000-0000"
+                placeholder="+91 98765 43210"
                 value={profileForm.phone}
                 onChange={(e) =>
                   setProfileForm({ ...profileForm, phone: e.target.value })

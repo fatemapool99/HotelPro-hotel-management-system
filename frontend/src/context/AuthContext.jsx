@@ -45,9 +45,12 @@ export const AuthProvider = ({ children }) => {
     initAuth();
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (email, password, requiredRole) => {
     const res = await authAPI.login({ email, password });
     const { token: receivedToken, user: receivedUser } = res.data;
+    if (requiredRole && receivedUser.role !== requiredRole) {
+      throw new Error('This account does not have admin access. Please use Guest Sign In.');
+    }
     setToken(receivedToken);
     setUser(receivedUser);
     localStorage.setItem('hotelpro_token', receivedToken);

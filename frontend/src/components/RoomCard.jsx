@@ -1,5 +1,6 @@
 import React from 'react';
 import { Users, Bed, Sparkles, Star, ArrowRight, ShieldCheck, Maximize2 } from 'lucide-react';
+import { formatINR } from '../utils/formatters';
 
 export default function RoomCard({ room, onSelectRoom, onBookRoom }) {
   const defaultImage =
@@ -103,7 +104,7 @@ export default function RoomCard({ room, onSelectRoom, onBookRoom }) {
             </span>
             <div className="flex items-baseline gap-1">
               <span className="font-serif text-2xl font-extrabold text-hotel-navy">
-                ${room.pricePerNight}
+                {formatINR(room.pricePerNight)}
               </span>
               <span className="text-xs text-gray-500 font-medium">/ night</span>
             </div>

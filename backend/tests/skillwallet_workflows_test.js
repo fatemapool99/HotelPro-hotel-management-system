@@ -30,7 +30,7 @@ async function runSkillWalletTests() {
       body: JSON.stringify({
         name: 'Test Mismatch',
         email: mismatchEmail,
-        phone: '+1 555-0100',
+        phone: '+91 98200 00100',
         password: 'Password123!',
         confirmPassword: 'DifferentPassword456!',
       }),
@@ -41,12 +41,12 @@ async function runSkillWalletTests() {
     // 1.3 Test Successful SignUp
     console.log('1.3 Testing User Registration with full required fields...');
     const userEmail = `skillwallet_guest_${Date.now()}@test.com`;
-    const userPhone = '+1 (555) 345-6789';
+    const userPhone = '+91 98201 34567';
     const registerRes = await fetch(`${BASE_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name: 'Madeline Thorne',
+        name: 'Ananya Deshmukh',
         email: userEmail,
         phone: userPhone,
         password: 'SecurePass@123',
@@ -109,14 +109,14 @@ async function runSkillWalletTests() {
         checkInDate: checkIn,
         checkOutDate: checkOut,
         guestInfo: {
-          fullName: 'Madeline Thorne',
+          fullName: 'Ananya Deshmukh',
           email: userEmail,
           phone: userPhone,
-          specialRequests: 'High floor oceanfront view',
+          specialRequests: 'High floor sea view room',
           adults: 2,
           children: 0,
         },
-        paymentStatus: 'paid',
+        paymentStatus: 'pay_at_hotel',
       }),
     });
     const bookData = await bookRes.json();
@@ -125,7 +125,7 @@ async function runSkillWalletTests() {
     assert.strictEqual(bookData.booking.totalNights, 4);
     assert.strictEqual(bookData.booking.status, 'confirmed');
     assert.strictEqual(bookData.booking.guestInfo.phone, userPhone);
-    console.log(`    ✅ Booking created! ID: #${bookingId}, Status: ${bookData.booking.status}, Total: $${bookData.booking.totalPrice}`);
+    console.log(`    ✅ Booking created! ID: #${bookingId}, Status: ${bookData.booking.status}, Total: ₹${bookData.booking.totalPrice}`);
 
     // 2.3 Prevent Overlapping Double-Booking
     console.log('2.3 Verifying overlapping reservation prevention on same room...');
@@ -142,7 +142,7 @@ async function runSkillWalletTests() {
         guestInfo: {
           fullName: 'Another Guest',
           email: 'another@example.com',
-          phone: '+1 555-9999',
+          phone: '+91 98200 99999',
         },
       }),
     });
@@ -229,13 +229,13 @@ async function runSkillWalletTests() {
     console.log('3.4 Tab 3: Adding new room via Admin form and saving to MongoDB...');
     const uniqueRoomNumber = `SW-${Date.now().toString().slice(-4)}`;
     const newRoomPayload = {
-      title: 'Azure Horizon Penthouse Suite',
+      title: 'Royal Sea-View Penthouse Suite',
       roomType: 'Presidential Suite',
-      pricePerNight: 720,
-      capacity: { guests: 4, beds: 2, bedType: 'California King' },
+      pricePerNight: 26000,
+      capacity: { guests: 4, beds: 2, bedType: 'King Bed' },
       size: '980 sq ft',
-      description: 'Exclusive penthouse with panoramic skyline and ocean views, floor-to-ceiling glass, and wrap-around terrace.',
-      amenities: ['Panoramic Ocean View', 'Private Jacuzzi', 'Butler Service', 'High-Speed Wi-Fi', 'Complimentary Breakfast'],
+      description: 'Exclusive penthouse with panoramic Arabian Sea and skyline views, floor-to-ceiling glass, and wrap-around terrace.',
+      amenities: ['Arabian Sea View', 'Private Jacuzzi', 'Butler Service', 'High-Speed Wi-Fi', 'Complimentary Breakfast'],
       images: ['https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80'],
       roomNumber: uniqueRoomNumber,
       floor: 12,

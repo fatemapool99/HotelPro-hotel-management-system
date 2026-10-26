@@ -6,10 +6,9 @@ import {
   RotateCcw,
   Sparkles,
   BedDouble,
-  DollarSign,
-  Users,
   Check,
 } from 'lucide-react';
+import { formatINR } from '../utils/formatters';
 
 const ROOM_TYPES = [
   'All',
@@ -21,13 +20,13 @@ const ROOM_TYPES = [
 ];
 
 const POPULAR_AMENITIES = [
-  'Ocean View',
-  'Private Jacuzzi',
+  'Sea View',
+  'Private Plunge Pool',
   'Butler Service',
   'King Bed',
   'High-Speed Wi-Fi',
-  'Direct Lagoon Access',
-  'Smart Home Automation',
+  'Lake View',
+  'Garden Veranda',
 ];
 
 export default function RoomsPage({
@@ -39,7 +38,7 @@ export default function RoomsPage({
 }) {
   const [search, setSearch] = useState(initialFilters.search || '');
   const [selectedType, setSelectedType] = useState(initialFilters.roomType || 'All');
-  const [maxPrice, setMaxPrice] = useState(1200);
+  const [maxPrice, setMaxPrice] = useState(40000);
   const [minGuests, setMinGuests] = useState(initialFilters.guests || '1');
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [sortBy, setSortBy] = useState('recommended');
@@ -56,7 +55,7 @@ export default function RoomsPage({
   const handleResetFilters = () => {
     setSearch('');
     setSelectedType('All');
-    setMaxPrice(1200);
+    setMaxPrice(40000);
     setMinGuests('1');
     setSelectedAmenities([]);
     setSortBy('recommended');
@@ -123,7 +122,7 @@ export default function RoomsPage({
           Rooms & Signature Suites
         </h1>
         <p className="text-sm text-gray-600">
-          Filter our luxurious accommodations by type, capacity, price, and bespoke amenities.
+          Find a room by type, number of guests, nightly rate and facilities.
         </p>
       </div>
 
@@ -191,22 +190,22 @@ export default function RoomsPage({
                 Max Price per Night
               </label>
               <span className="text-xs font-bold text-hotel-goldDark font-serif">
-                ${maxPrice}
+                {formatINR(maxPrice)}
               </span>
             </div>
             <input
               type="range"
-              min="150"
-              max="1200"
-              step="25"
+              min="2000"
+              max="40000"
+              step="500"
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
               className="w-full accent-hotel-gold cursor-pointer"
             />
             <div className="flex justify-between text-[10px] text-gray-400">
-              <span>$150</span>
-              <span>$600</span>
-              <span>$1,200+</span>
+              <span>₹2,000</span>
+              <span>₹20,000</span>
+              <span>₹40,000+</span>
             </div>
           </div>
 

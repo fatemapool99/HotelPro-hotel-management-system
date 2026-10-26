@@ -30,10 +30,10 @@ async function runLiveE2ETest() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name: 'Seraphina Vance',
+        name: 'Pooja Kulkarni',
         email: uniqueEmail,
         password: 'Password@123',
-        phone: '+1 (555) 998-1122',
+        phone: '+91 98201 99122',
       }),
     });
     const registerData = await registerRes.json();
@@ -81,14 +81,14 @@ async function runLiveE2ETest() {
         checkInDate: checkIn,
         checkOutDate: checkOut,
         guestInfo: {
-          fullName: 'Seraphina Vance',
+          fullName: 'Pooja Kulkarni',
           email: uniqueEmail,
-          phone: '+1 (555) 998-1122',
-          specialRequests: 'Oceanfront champagne welcome requested.',
+          phone: '+91 98201 99122',
+          specialRequests: 'Quiet room with scenic balcony view.',
           adults: 2,
           children: 0,
         },
-        paymentStatus: 'paid',
+        paymentStatus: 'pay_at_hotel',
       }),
     });
     const bookingData = await bookingRes.json();
@@ -98,7 +98,7 @@ async function runLiveE2ETest() {
     const expectedTotal = expectedSubtotal + Math.round(expectedSubtotal * 0.12);
     assert.strictEqual(bookingData.booking.totalPrice, expectedTotal);
     const createdBookingId = bookingData.booking._id;
-    console.log(`   ✅ Booking confirmed! Ref ID: #${createdBookingId} (Total: $${expectedTotal} for 4 nights).`);
+    console.log(`   ✅ Booking confirmed! Ref ID: #${createdBookingId} (Total: ₹${expectedTotal} for 4 nights).`);
 
     // 7. Test Double-Booking Prevention
     console.log('\n7️⃣ Testing Overlapping Double-Booking Prevention...');
@@ -116,7 +116,7 @@ async function runLiveE2ETest() {
         guestInfo: {
           fullName: 'Another Guest',
           email: 'conflict@test.com',
-          phone: '+1 (555) 000-0000',
+          phone: '+91 98200 00000',
         },
       }),
     });

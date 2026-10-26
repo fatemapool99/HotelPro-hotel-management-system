@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const roomSchema = new mongoose.Schema(
   {
+    reservationClaims: {
+      type: [{ _id: false, booking: mongoose.Schema.Types.ObjectId, checkIn: Date, checkOut: Date }],
+      default: [],
+      select: false,
+    },
     title: {
       type: String,
       required: [true, 'Please provide room title'],

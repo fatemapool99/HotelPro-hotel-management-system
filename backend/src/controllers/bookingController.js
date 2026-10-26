@@ -1,10 +1,14 @@
 const Booking = require('../models/Booking');
 const Room = require('../models/Room');
+const mongoose = require('mongoose');
 
 // @desc    Create a new booking (with strict overlapping double-booking prevention)
 // @route   POST /api/bookings
 // @access  Private
 const createBooking = async (req, res) => {
+  let claimId;
+  let claimedRoom;
+  let saved = false;
   try {
     const {
       roomId,
@@ -43,6 +47,11 @@ const createBooking = async (req, res) => {
       });
     }
 
+    const adults = Number(guestInfo.adults ?? 1);
+    const children = Number(guestInfo.children ?? 0);
+    if (!Number.isInteger(adults) || adults < 1 || !Number.isInteger(children) || children < 0 || adults + children > room.capacity.guests) {
+      return res.status(400).json({ success: false, message: 'Guest count must fit the room capacity, with at least one adult.' });
+    }
     const checkInDate = new Date(checkInStr);
     const checkOutDate = new Date(checkOutStr);
 
@@ -54,11 +63,11 @@ const createBooking = async (req, res) => {
     }
 
     // Normalize to midnight UTC or local date comparison to avoid partial hour anomalies
-    checkInDate.setHours(0, 0, 0, 0);
-    checkOutDate.setHours(0, 0, 0, 0);
+    checkInDate.setUTCHours(0, 0, 0, 0);
+    checkOutDate.setUTCHours(0, 0, 0, 0);
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
     if (checkInDate < today) {
       return res.status(400).json({
@@ -101,11 +110,33 @@ const createBooking = async (req, res) => {
     const totalNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const pricePerNight = room.pricePerNight;
     const subtotal = totalNights * pricePerNight;
-    // Include 12% standard luxury hospitality tax and service fee
+    // Include 12% estimated taxes and hotel service fee
     const taxAndServiceFee = Math.round(subtotal * 0.12);
     const totalPrice = subtotal + taxAndServiceFee;
 
+    // Determine safe initial payment status (without live gateway, non-admins cannot auto-set 'paid')
+    let resolvedPaymentStatus = 'pending';
+    if (paymentStatus === 'pay_at_hotel') {
+      resolvedPaymentStatus = 'pay_at_hotel';
+    } else if (paymentStatus === 'paid' && req.user.role === 'admin') {
+      resolvedPaymentStatus = 'paid';
+    } else {
+      resolvedPaymentStatus = 'pending';
+    }
+
+    // Claim the range atomically on one room document, across all API instances.
+    claimId = new mongoose.Types.ObjectId();
+    const claim = await Room.updateOne({
+      _id: room._id,
+      isAvailable: true,
+      reservationClaims: { $not: { $elemMatch: { checkIn: { $lt: checkOutDate }, checkOut: { $gt: checkInDate } } } },
+    }, { $push: { reservationClaims: { booking: claimId, checkIn: checkInDate, checkOut: checkOutDate } } });
+    if (!claim.modifiedCount) {
+      return res.status(409).json({ success: false, message: 'This room was just reserved. Please choose different dates.' });
+    }
+    claimedRoom = room._id;
     const booking = await Booking.create({
+      _id: claimId,
       room: room._id,
       user: req.user._id,
       checkInDate,
@@ -118,13 +149,14 @@ const createBooking = async (req, res) => {
         email: guestInfo.email.trim(),
         phone: guestInfo.phone.trim(),
         specialRequests: guestInfo.specialRequests || '',
-        adults: Number(guestInfo.adults || 1),
-        children: Number(guestInfo.children || 0),
+        adults,
+        children,
       },
-      paymentStatus: paymentStatus || 'paid',
+      paymentStatus: resolvedPaymentStatus,
       status: 'confirmed',
     });
 
+    saved = true;
     const populatedBooking = await Booking.findById(booking._id)
       .populate('room')
       .populate('user', 'name email phone');
@@ -135,6 +167,14 @@ const createBooking = async (req, res) => {
       booking: populatedBooking,
     });
   } catch (error) {
+    if (claimedRoom && !saved) {
+      // A timed-out write may have succeeded. Only release a confirmed unused claim.
+      try {
+        if (!await Booking.exists({ _id: claimId })) {
+          await Room.updateOne({ _id: claimedRoom }, { $pull: { reservationClaims: { booking: claimId } } });
+        }
+      } catch (cleanupError) { console.error('Reservation claim requires reconciliation:', cleanupError.message); }
+    }
     console.error('Create booking error:', error);
     return res.status(500).json({
       success: false,
@@ -239,6 +279,7 @@ const cancelBooking = async (req, res) => {
 
     booking.status = 'cancelled';
     await booking.save();
+    await Room.updateOne({ _id: booking.room }, { $pull: { reservationClaims: { booking: booking._id } } });
 
     const updatedBooking = await Booking.findById(booking._id).populate('room');
 
@@ -318,6 +359,9 @@ const updateBookingStatus = async (req, res) => {
       });
     }
 
+    if (booking.status === 'cancelled' && status && status !== 'cancelled') {
+      return res.status(400).json({ success: false, message: 'Cancelled bookings cannot be reopened. Create a new booking to check availability.' });
+    }
     if (status) {
       if (!['confirmed', 'cancelled', 'completed'].includes(status)) {
         return res.status(400).json({
@@ -340,6 +384,9 @@ const updateBookingStatus = async (req, res) => {
 
     await booking.save();
 
+    if (booking.status === 'cancelled') {
+      await Room.updateOne({ _id: booking.room }, { $pull: { reservationClaims: { booking: booking._id } } });
+    }
     const updated = await Booking.findById(booking._id)
       .populate('room')
       .populate('user', 'name email phone');
