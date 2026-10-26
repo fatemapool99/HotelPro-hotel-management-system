@@ -28,6 +28,16 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Await Atlas on cold starts and reuse the connection for concurrent requests.
+app.use('/api', async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch {
+    res.status(503).json({ success: false, message: 'Database temporarily unavailable. Please try again.' });
+  }
+});
+
 // Health / Welcome Route
 app.get('/api/health', (req, res) => {
   if (mongoose.connection.readyState !== 1) return res.status(503).json({ status: 'unavailable' });
@@ -63,7 +73,7 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 // Export app for testing purposes
-if (process.env.NODE_ENV !== 'test') {
+if (require.main === module && process.env.NODE_ENV !== 'test') {
   connectDB().then(() => {
     app.listen(PORT, () => console.log('HotelPro Backend Server listening on port ' + PORT));
   }).catch(error => { console.error(error.message); process.exitCode = 1; });

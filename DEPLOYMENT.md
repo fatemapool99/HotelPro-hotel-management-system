@@ -1,5 +1,15 @@
 # Submit HotelPro
 
+## Vercel: one public domain
+
+Import or link the existing project with its Root Directory set to the repository root (not `frontend`). The root `vercel.json` builds the Express and Vite services independently, routes `/api` to Express and other requests to Vite, and includes the frontend fallback for direct page navigation.
+
+Set private production environment variables in Vercel: `MONGODB_URI` (Atlas URI with database name), a random `JWT_SECRET` of at least 32 characters, `JWT_EXPIRES_IN=1d`, and `NODE_ENV=production`. Set `CORS_ORIGINS` to the public HTTPS origin. Omit `VITE_API_URL` for this single-domain configuration; the browser uses `/api`. Never prefix database credentials or the JWT secret with `VITE_`.
+
+Allow the backend's network access in Atlas and use a database user limited to the HotelPro database. Do not commit `.env` files or print credentials in deployment logs. Populate rooms once using `npm run rooms:refresh` from `backend` with the Atlas URI supplied privately. This inserts missing standard rooms and updates listing copy while preserving accounts, bookings and reservation claims. Do not use the legacy destructive seed command.
+
+Redeploy after setting environment variables. Verify the public homepage, `/api/health` (200 with `status: online`), `/api/rooms` (nonempty JSON), and direct navigation to `/rooms`. Register a disposable guest, sign out/in, make a future booking, verify it under My Bookings, and cancel it. A successful frontend deployment alone does not verify the database or booking workflow.
+
 ## Prepare the hosted database and API
 
 1. Create a MongoDB database reachable by your backend host. Keep credentials private.
